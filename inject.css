@@ -1,0 +1,7 @@
+.game-state-overview__wrong-guesses {
+	z-index: 99;
+};
+
+.game-state-overview__player-list{
+	z-index: -1;
+};
