@@ -3,16 +3,16 @@
 (function() {
 	var gameStarted = false;
 
-	let wrongGuessesSelector = '.game-state-overview__wrong-guesses .wrong-guesses__flags';
+	let wrongGuessesSelector = 'div[class^="countries-game-overview_overviewWrongGuesses__"]';
 
 	const getCountryCode = function(flag){
-  		let flagImg = flag.getElementsByTagName('img');
-		let flagUrl = flagImg[0].getAttribute('src');
-		let imgName = flagUrl.split('/static/flags/')[1];
-		let countryCode = imgName.substr(0, imgName.length - 4);
-		let countryName = countryNames[countryCode];
-		$(flagImg).attr('title', countryName);
-		$(flagImg).tooltip({content: countryName, show: {duration: 0}, hide: {duration: 0}});
+		if(flag.tagName.toLowerCase() === 'img') {
+			let countryName = flag.getAttribute('alt');
+			if (countryName){
+				$(flag).attr('title', countryName);
+				$(flag).tooltip({content: countryName, show: {duration: 0}, hide: {duration: 0}});
+			}
+		}
 	}
 
 	// Options for the observer (which mutations to observe)
@@ -37,9 +37,9 @@
 	    	if (!gameStarted){
 				observer.observe(document.querySelector(wrongGuessesSelector), config);
 				$('[role="tooltip"]').remove();
-				flags = document.querySelectorAll(wrongGuessesSelector + ' .wrong-guesses__flag');
+				flags = document.querySelectorAll(wrongGuessesSelector + ' div[class^="countries-game-overview_wrongGuessesFlag__"]');
 				for (var flag of flags){
-					getCountryCode(flag);	
+					getCountryCode(flag);
 				}
 	    	}
 	    	gameStarted = true;
