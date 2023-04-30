@@ -1,7 +1,7 @@
 {
   "name": "Geoguessr Flags Helper",
   "version": "0.0.1",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "description": "Label the flags!",
   "content_scripts": [
     {
@@ -14,7 +14,7 @@
       "run_at": "document_end"
     }
   ],
-  "browser_action": {
+  "action": {
     "default_title": "Geoguessr Flags Helper"
   },
   "permissions": [

@@ -3,7 +3,9 @@
 (function() {
 	var gameStarted = false;
 
+	let gamePopupsSelector = 'div[class^="game_popups__"]';
 	let wrongGuessesSelector = 'div[class^="countries-game-overview_overviewWrongGuesses__"]';
+	let tooltipSelector = 'div[role="tooltip"]';
 
 	const getCountryCode = function(flag){
 		if(flag.tagName.toLowerCase() === 'img') {
@@ -19,7 +21,7 @@
 	const config = { attributes: true, childList: true, subtree: true };
 
 	// Callback function to execute when mutations are observed
-	const callback = function(mutationsList, observer) {
+	const flagsCallback = function(mutationsList, observer) {
 	    // Use traditional 'for loops' for IE 11
 	    for(const mutation of mutationsList) {
             let newFlags = mutation.addedNodes;
@@ -29,22 +31,33 @@
 	    }
 	};
 
+	const gamePopupCallback = function(mutationsList, observer) {
+		tooltips = document.querySelectorAll(tooltipSelector);
+		for (var tt of tooltips) {
+			$(tt).remove();
+		}
+	}
+
 	// Create an observer instance linked to the callback function
-	const observer = new MutationObserver(callback);
+	const flagsObserver = new MutationObserver(flagsCallback);
+	const gamePopupObserver = new MutationObserver(gamePopupCallback);
 
 	let bodyObserver = new MutationObserver((mutations) => {
 	    if (!!document.querySelector(wrongGuessesSelector)) {
 	    	if (!gameStarted){
-				observer.observe(document.querySelector(wrongGuessesSelector), config);
-				$('[role="tooltip"]').remove();
+				flagsObserver.observe(document.querySelector(wrongGuessesSelector), config);
+				$(tooltipSelector).remove();
 				flags = document.querySelectorAll(wrongGuessesSelector + ' div[class^="countries-game-overview_wrongGuessesFlag__"]');
 				for (var flag of flags){
 					getCountryCode(flag);
 				}
+
+				gamePopupObserver.observe(document.querySelector(gamePopupsSelector), config);
 	    	}
 	    	gameStarted = true;
 	    } else {
-	    	observer.disconnect();
+	    	flagsObserver.disconnect();
+			gamePopupObserver.disconnect();
 	    	gameStarted = false;
 	    }
 	})
