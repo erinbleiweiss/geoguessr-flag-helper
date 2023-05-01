@@ -1,7 +1,22 @@
 .game-state-overview__wrong-guesses {
 	z-index: 99;
-};
+}
 
 .game-state-overview__player-list{
 	z-index: -1;
-};
+}
+
+div[role="tooltip"]{
+	background-color: #484858;
+	border: 0 !important;
+	border-radius: 20px;
+	padding: 8px 16px;
+	box-shadow: rgb(3, 3, 5) 5px 5px 10px;
+}
+
+div[role="tooltip"] .ui-tooltip-content {
+	color: white;
+	font-family: var(--default-font);
+	font-size: 0.8em;
+	font-weight: 500;
+}
