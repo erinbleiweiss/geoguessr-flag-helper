@@ -8,6 +8,12 @@
 	let tooltipSelector = 'div[role="tooltip"]';
 
 	const getCountryCode = function(flag){
+		if(flag.tagName.toLowerCase() !== 'img') {
+			let flagRes = $(flag).find("img")
+			if (flagRes.length > 0) {
+				flag = flagRes[0]
+			}
+		}
 		if(flag.tagName.toLowerCase() === 'img') {
 			let countryName = flag.getAttribute('alt');
 			if (countryName){
