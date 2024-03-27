@@ -7,6 +7,15 @@
 	let wrongGuessesSelector = 'div[class^="countries-game-overview_overviewWrongGuesses__"]';
 	let tooltipSelector = 'div[role="tooltip"]';
 
+	const censorUsername = function() {
+		var html = document.querySelector('html');
+		var walker = document.createTreeWalker(html, NodeFilter.SHOW_TEXT);
+		var node;
+		while (node = walker.nextNode()) {
+			node.nodeValue = node.nodeValue.replace(/fistfulofpaintballs/i, '...')
+		}
+	}
+
 	const getCountryCode = function(flag){
 		if(flag.tagName.toLowerCase() !== 'img') {
 			let flagRes = $(flag).find("img")
@@ -49,6 +58,7 @@
 	const gamePopupObserver = new MutationObserver(gamePopupCallback);
 
 	let bodyObserver = new MutationObserver((mutations) => {
+		censorUsername();
 	    if (!!document.querySelector(wrongGuessesSelector)) {
 	    	if (!gameStarted){
 				flagsObserver.observe(document.querySelector(wrongGuessesSelector), config);
